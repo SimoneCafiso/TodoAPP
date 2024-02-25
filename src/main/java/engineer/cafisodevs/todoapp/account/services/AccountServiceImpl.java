@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -71,6 +72,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Optional<EntityUser> loadAccount(String email) {
         return accountRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<EntityUser> loadAccount(UUID uuid) {
+        return accountRepository.findByUuid(uuid);
     }
 
     @Override

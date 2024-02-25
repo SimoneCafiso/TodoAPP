@@ -1,11 +1,13 @@
 package engineer.cafisodevs.todoapp.account;
 
+import engineer.cafisodevs.todoapp.todo.TodoEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -28,6 +30,10 @@ public class EntityUser implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TodoEntity> todos;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

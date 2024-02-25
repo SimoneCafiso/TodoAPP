@@ -6,6 +6,7 @@ import engineer.cafisodevs.todoapp.authentication.dto.SignUPRequest;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface AccountService {
     /**
@@ -37,10 +38,16 @@ public interface AccountService {
     Optional<EntityUser> updateAccount(AccountDTO accountDTO);
     /**
      * This method updates an account
-     * @param principal
+     * @param email
      * @return Optional of EntityUser
      */
     Optional<EntityUser> loadAccount(String email);
+    /**
+     * This method updates an account
+     * @param uuid
+     * @return Optional of EntityUser
+     */
+    Optional<EntityUser> loadAccount(UUID uuid);
     /**
      * This method updates an account
      * @param principal
