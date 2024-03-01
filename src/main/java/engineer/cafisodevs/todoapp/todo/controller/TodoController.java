@@ -3,6 +3,7 @@ package engineer.cafisodevs.todoapp.todo.controller;
 import engineer.cafisodevs.todoapp.account.services.AccountServiceImpl;
 import engineer.cafisodevs.todoapp.todo.TodoEntity;
 import engineer.cafisodevs.todoapp.todo.dto.TodoDTO;
+import engineer.cafisodevs.todoapp.todo.dto.UniqueTodoDTO;
 import engineer.cafisodevs.todoapp.todo.service.TodoServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/todo")
@@ -42,10 +44,11 @@ public class TodoController {
     @GetMapping("/load/all")
     public ResponseEntity<Object> loadAll(HttpServletRequest request) {
         try {
-            List<TodoDTO> allTodos = new ArrayList<>();
+            List<UniqueTodoDTO> allTodos = new ArrayList<>();
 
             todoService.loadAllTodoEntitiesbyUser(accountService.loadAccount(request.getUserPrincipal()).orElseThrow(() -> new RuntimeException("Error loading account"))).forEach(todoEntity -> {
-                allTodos.add(TodoDTO.builder()
+                allTodos.add(UniqueTodoDTO.builder()
+                        .uuid(todoEntity.getUuid())
                         .name(todoEntity.getName())
                         .detail(todoEntity.getDetail())
                         .createdAt(todoEntity.getCreatedAt().toString())
@@ -97,7 +100,7 @@ public class TodoController {
     public ResponseEntity<Object> delete(HttpServletRequest request, @PathVariable String uuid) {
         try {
             todoService.deleteTodoEntity(java.util.UUID.fromString(uuid));
-            return ResponseEntity.ok().body("Todo deleted successfully");
+            return ResponseEntity.ok().body(uuid);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
